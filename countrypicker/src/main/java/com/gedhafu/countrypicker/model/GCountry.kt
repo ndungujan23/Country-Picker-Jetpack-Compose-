@@ -25,11 +25,15 @@ data class GCountry(
 fun GCountry.toMap(): Map<String, String?> {
     return mapOf(
         "name" to name,
-        "dial_code" to dial_code,
+        "dial_code" to getDialCode(),
         "iso_2" to iso_2,
         "iso_3" to iso_3,
         "capital" to capital,
     )
+}
+
+fun GCountry.getDialCode(): String {
+    return if (dial_code.startsWith("+")) dial_code else "+$dial_code"
 }
 
 fun List<GCountry>.searchCountry(ctx: Context, query: String): MutableList<GCountry> {

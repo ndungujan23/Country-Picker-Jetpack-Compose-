@@ -1,4 +1,4 @@
-package com.gedhafu.countrypicker.ui.component
+package com.gedhafu.countrypicker
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.runtime.*
@@ -23,19 +24,89 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.gedhafu.countrypicker.R
 import com.gedhafu.countrypicker.model.*
+
+
+@ExperimentalComposeUiApi
+@Composable
+fun GCountryDialCodeField(
+    modifier: Modifier = Modifier,
+    showDialCode: Boolean = true,
+    enabled: Boolean = true,
+    dialogTopBarElevation: Dp = 0.dp,
+    dialogTopBarColor: Color = MaterialTheme.colors.surface,
+    dialogTopBarContentColor: Color = MaterialTheme.colors.onSurface,
+    selectedCountryISO: String = "",
+    onCountryValueChange: (Map<String, String?>) -> Unit,
+) {
+    val context = LocalContext.current
+
+    var showDialog by remember { mutableStateOf(false) }
+    var selected by remember { mutableStateOf<GCountry?>(null) }
+    val interactionSource = remember { MutableInteractionSource() }
+
+    LaunchedEffect(1) {
+        selected = GCountry().getRawCountries(context).find {
+            it.iso_2.contentEquals(selectedCountryISO, true)
+                .or(it.iso_3.contentEquals(selectedCountryISO, true))
+        }
+    }
+
+    val onSelect: (GCountry?) -> Unit = {
+        showDialog = false
+        selected = it
+        onCountryValueChange.invoke(it?.toMap() ?: GCountry().toMap())
+    }
+
+    Column(
+        modifier = modifier
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) { if (enabled) showDialog = true },
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painterResource(selected?.getFlag() ?: R.drawable.ic_globe),
+                contentDescription = null,
+                modifier = Modifier.width(35.dp),
+            )
+            if (showDialCode && !selected?.getDialCode().isNullOrEmpty()) {
+                Text(
+                    text = selected?.getDialCode().orEmpty(),
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+            Icon(Icons.Default.ArrowDropDown, null)
+        }
+    }
+
+    CountryPickerDialog(
+        showDialog,
+        showDialCode,
+        selected,
+        dialogTopBarElevation,
+        dialogTopBarColor,
+        dialogTopBarContentColor,
+        onSelect,
+    )
+}
 
 
 @ExperimentalComposeUiApi
 @Composable
 fun GCountryField(
     modifier: Modifier = Modifier,
+    showDialCode: Boolean = true,
     enabled: Boolean = true,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
@@ -110,6 +181,7 @@ fun GCountryField(
 
     CountryPickerDialog(
         showDialog,
+        showDialCode,
         selected,
         dialogTopBarElevation,
         dialogTopBarColor,
@@ -123,6 +195,7 @@ fun GCountryField(
 @Composable
 private fun CountryPickerDialog(
     open: Boolean = false,
+    showDialCode: Boolean = true,
     selectedCountry: GCountry? = null,
     dialogTopBarElevation: Dp = 0.dp,
     dialogTopBarColor: Color = MaterialTheme.colors.surface,
@@ -231,15 +304,22 @@ private fun CountryPickerDialog(
                             Arrangement.Start,
                             Alignment.CenterVertically
                         ) {
-                            Image(
-                                painterResource(country.getFlag()),
-                                null,
-                                Modifier.size(25.dp),
-                            )
-                            Text(
-                                stringResource(country.getCountryName()),
-                                Modifier.padding(horizontal = 18.dp)
-                            )
+                            Row(
+                                Modifier.weight(1f),
+                                Arrangement.Start,
+                                Alignment.CenterVertically
+                            ) {
+                                Image(
+                                    painterResource(country.getFlag()),
+                                    null,
+                                    Modifier.size(25.dp),
+                                )
+                                Text(
+                                    stringResource(country.getCountryName()),
+                                    Modifier.padding(horizontal = 18.dp)
+                                )
+                            }
+                            if (showDialCode) Text(country.getDialCode())
                         }
                     }
                 }
