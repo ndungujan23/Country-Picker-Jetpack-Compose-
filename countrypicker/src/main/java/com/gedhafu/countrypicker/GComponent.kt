@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
@@ -111,6 +112,7 @@ fun GCountryField(
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
+    leadingIconTint: Color = MaterialTheme.colors.onBackground,
     dialogTopBarElevation: Dp = 0.dp,
     dialogTopBarColor: Color = MaterialTheme.colors.surface,
     dialogTopBarContentColor: Color = MaterialTheme.colors.onSurface,
@@ -158,6 +160,8 @@ fun GCountryField(
                 Modifier
                     .size(46.dp)
                     .padding(8.dp),
+                colorFilter = if (selected?.getFlag() == null) ColorFilter.tint(color = leadingIconTint) else
+                    null
             )
         },
         trailingIcon = trailingIcon,

@@ -13,9 +13,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gedhafu.composecountrypicker.ui.theme.ComposeCountryPickerTheme
-import com.gedhafu.countrypicker.R
-import com.gedhafu.countrypicker.GCountryField
 import com.gedhafu.countrypicker.GCountryDialCodeDropdown
+import com.gedhafu.countrypicker.GCountryField
+import com.gedhafu.countrypicker.R
 
 @ExperimentalComposeUiApi
 class MainActivity : ComponentActivity() {
@@ -58,7 +58,7 @@ fun DefaultPreview() {
                 },
                 onCountryValueChange = { i -> println(i) }
             )
-
+            Spacer(Modifier.height(50.dp))
             GCountryDialCodeDropdown(onCountryValueChange = { i -> println(i) })
         }
     }
