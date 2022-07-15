@@ -34,7 +34,7 @@ import com.gedhafu.countrypicker.model.*
 
 @ExperimentalComposeUiApi
 @Composable
-fun GCountryCodeField(
+fun GCountryField(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: @Composable (() -> Unit)? = null,
@@ -48,7 +48,7 @@ fun GCountryCodeField(
     colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(),
     isError: Boolean = false,
     selectedCountryISO: String = "",
-    onCountrySelect: (Map<String, String?>?) -> Unit,
+    onCountryValueChange: (Map<String, String?>) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -60,7 +60,7 @@ fun GCountryCodeField(
         showDialog = false
         selected = it
         value = TextFieldValue(it?.name.orEmpty())
-        onCountrySelect.invoke(it?.toMap())
+        onCountryValueChange.invoke(it?.toMap() ?: GCountry().toMap())
     }
 
     LaunchedEffect(1) {

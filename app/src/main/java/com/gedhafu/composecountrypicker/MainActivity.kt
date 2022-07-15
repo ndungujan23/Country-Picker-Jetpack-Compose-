@@ -15,10 +15,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.gedhafu.composecountrypicker.ui.theme.ComposeCountryPickerTheme
 import com.gedhafu.countrypicker.R
-import com.gedhafu.countrypicker.ui.component.GCountryCodeField
+import com.gedhafu.countrypicker.ui.component.GCountryField
 
+@ExperimentalComposeUiApi
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -28,11 +28,11 @@ class MainActivity : ComponentActivity() {
                     Arrangement.Center,
                     Alignment.CenterHorizontally,
                 ) {
-                    GCountryCodeField(
+                    GCountryField(
                         placeholder = {
                             Text(stringResource(R.string.select_country))
                         },
-                        onCountrySelect = { i -> println(i) }
+                        onCountryValueChange = { i -> println(i) }
                     )
                 }
             }
@@ -40,13 +40,13 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@ExperimentalComposeUiApi
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     ComposeCountryPickerTheme {
-        GCountryCodeField(
-            onCountrySelect = { i -> println(i) }
+        GCountryField(
+            onCountryValueChange = { i -> println(i) }
         )
     }
 }
