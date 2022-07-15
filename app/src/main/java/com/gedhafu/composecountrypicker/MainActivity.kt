@@ -3,9 +3,7 @@ package com.gedhafu.composecountrypicker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,10 +11,11 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.gedhafu.composecountrypicker.ui.theme.ComposeCountryPickerTheme
 import com.gedhafu.countrypicker.R
 import com.gedhafu.countrypicker.GCountryField
-import com.gedhafu.countrypicker.GCountryDialCodeField
+import com.gedhafu.countrypicker.GCountryDialCodeDropdown
 
 @ExperimentalComposeUiApi
 class MainActivity : ComponentActivity() {
@@ -35,8 +34,8 @@ class MainActivity : ComponentActivity() {
                         },
                         onCountryValueChange = { i -> println(i) }
                     )
-                    
-                    GCountryDialCodeField(onCountryValueChange = { i -> println(i) })
+                    Spacer(Modifier.height(50.dp))
+                    GCountryDialCodeDropdown(onCountryValueChange = { i -> println(i) })
                 }
             }
         }
@@ -60,7 +59,7 @@ fun DefaultPreview() {
                 onCountryValueChange = { i -> println(i) }
             )
 
-            GCountryDialCodeField(onCountryValueChange = { i -> println(i) })
+            GCountryDialCodeDropdown(onCountryValueChange = { i -> println(i) })
         }
     }
 }

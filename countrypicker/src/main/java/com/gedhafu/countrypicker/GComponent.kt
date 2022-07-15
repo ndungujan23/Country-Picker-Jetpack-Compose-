@@ -35,7 +35,7 @@ import com.gedhafu.countrypicker.model.*
 
 @ExperimentalComposeUiApi
 @Composable
-fun GCountryDialCodeField(
+fun GCountryDialCodeDropdown(
     modifier: Modifier = Modifier,
     showDialCode: Boolean = true,
     enabled: Boolean = true,
