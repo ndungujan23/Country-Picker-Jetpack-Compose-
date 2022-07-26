@@ -36,7 +36,7 @@ country or country data.
 
   ```groovy
   dependencies {
-         implementation 'com.gedhafu.countrypicker:countrypicker:1.0.1'
+         implementation 'com.github.ndungujan23:Country-Picker-Jetpack-Compose-:Tag'
   }
   ```
 
